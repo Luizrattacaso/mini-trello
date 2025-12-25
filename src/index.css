@@ -31,6 +31,7 @@
 }
 
 .listContainer {
+  text-align: left;
   display: inline-block;
   justify-content: space-around;
   padding: 50px;
@@ -48,7 +49,8 @@
 }
 
 .displayObjects {
-  justify-content: space-around;
+  text-align: center;
+  justify-content: center;
 }
 
 .toDo {

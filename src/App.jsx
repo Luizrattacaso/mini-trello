@@ -9,13 +9,20 @@ import { useState } from "react";
 
 function App() {
   const INITIAL_PROJECTS = [
-    { id: 1, name: "Mini Trello Core" },
+    { id: 1, name: "Organização de Notion" },
     { id: 2, name: "Estudar Imutabilidade JS" },
     { id: 3, name: "Melhorar código de App.jsx" },
   ];
 
-  const inProgress = [];
-  const finished = [];
+  const inProgress = [
+    { id: 1, name: "Desenvolver Mini Trello" },
+    { id: 2, name: "Estudar React Hooks" },
+    { id: 3, name: "Curso do Maximilian Schwarzmüller" },
+  ];
+  const finished = [
+    { id: 1, name: "Aprender JavaScript" },
+    { id: 2, name: "Aprender Git e GitHub" },
+  ];
 
   const [toDo, setProjects] = useState(INITIAL_PROJECTS);
   const [newProjectName, setNewProjectName] = useState("");
@@ -60,13 +67,16 @@ function App() {
           />
           <Button onSelect={handleAddProject} text="Adicionar" />
         </div>
-
-        {/* Lista de Projetos (Continua a usar 'projects' do estado) */}
-        <h2>Meus Projetos ({toDo.length})</h2>
       </div>
-      <List title="To do" myList={toDo} />
-      <List title="In Progress" myList={toDo} />
-      <List title="Finished" myList={toDo} />
+      <div className="displayObjects">
+        {/* Lista de Projetos (Continua a usar 'projects' do estado) */}
+        <h2>
+          Meus Projetos ({toDo.length + inProgress.length + finished.length})
+        </h2>
+        <List title="To do" myList={toDo} />
+        <List title="In Progress" myList={inProgress} />
+        <List title="Finished" myList={finished} />
+      </div>
     </>
   );
 }
