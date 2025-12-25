@@ -1,0 +1,71 @@
+.button {
+  border: none;
+  color: rgb(66, 65, 65);
+  padding: 8px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.header {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.myInput {
+  padding: 8px;
+  margin-right: 10px;
+  min-width: 300px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+}
+
+.mainContainer {
+  padding: "20px";
+  font-family: "Arial, sans-serif";
+}
+
+.listContainer {
+  display: inline-block;
+  justify-content: space-around;
+  padding: 50px;
+  border: 1px solid #7a7a7a;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+
+.newProject {
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.displayObjects {
+  justify-content: space-around;
+}
+
+.toDo {
+  border: 5px;
+  border-color: black;
+  color: blue;
+  display: block;
+}
+
+.inProgress {
+  border: 5px;
+  color: blue;
+  display: block;
+}
+
+.finished {
+  border: 5px;
+  color: blue;
+  display: block;
+}
