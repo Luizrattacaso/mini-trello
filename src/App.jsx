@@ -2,59 +2,93 @@ import List from "./components/List.jsx";
 import Button from "./components/Button.jsx";
 import Input from "./components/Input.jsx";
 import { useState } from "react";
+import Snowfall from "react-snowfall";
 
-//Ajustes:
-//1. adivionar objeto com chave de status e renderirizar listas com base nisso ===> ideal fazer um enum para os status
+//TODO:
+//1. adicionar objeto com chave de status e renderirizar listas com base nisso ===> ideal fazer um enum para os status
 //2. adiconar botão com lápis para mudança de status (ciclo entre os status)
 
 function App() {
   const INITIAL_PROJECTS = [
-    { id: 1, name: "Organização de Notion" },
-    { id: 2, name: "Estudar Imutabilidade JS" },
-    { id: 3, name: "Melhorar código de App.jsx" },
+    { name: "Organização de Notion", status: "to do" },
+    { name: "Estudar Imutabilidade JS", status: "to do" },
+    { name: "Melhorar código de App.jsx", status: "to do" },
   ];
-
-  const inProgress = [
-    { id: 1, name: "Desenvolver Mini Trello" },
-    { id: 2, name: "Estudar React Hooks" },
-    { id: 3, name: "Curso do Maximilian Schwarzmüller" },
+  const inProgressList = [
+    { name: "Desenvolver Mini Trello", status: "in progress" },
+    { name: "Estudar React Hooks", status: "in progress" },
+    { name: "Curso do Maximilian Schwarzmüller", status: "in progress" },
   ];
-  const finished = [
-    { id: 1, name: "Aprender JavaScript" },
-    { id: 2, name: "Aprender Git e GitHub" },
+  const finishedList = [
+    { name: "Aprender JavaScript", status: "finished" },
+    { name: "Aprender Git e GitHub", status: "finished" },
   ];
 
   const [toDo, setProjects] = useState(INITIAL_PROJECTS);
+  const [inProgress, setInProgress] = useState(inProgressList);
+  const [finished, setFinished] = useState(finishedList);
+
   const [newProjectName, setNewProjectName] = useState("");
 
   const handleAddProject = () => {
     if (!newProjectName.trim()) {
+      // uma string vazia é igual a false e ao tornar false com o ! torna-se true e cai no if
       // 1. Prevenção básica (não adicionar projetos vazios)
       alert("O nome do projeto não pode ser vazio!");
       return;
     }
 
     const newProject = {
-      id: Date.now(), // não ideal para IDs em produção, mas serve para este exemplo
       name: newProjectName,
+      status: "to do",
     };
 
     const newProjectsArray = [...toDo, newProject];
     //não funcionaria se usassemos o .push() diretamente no estado (imutabilidade) pois isso alteraria o array original.
     // O React não renderizaria, ele só renderiza quando detecta a mudança no local de memória.
 
-    setProjects(newProjectsArray); // 4. Atualiza o estado colocando um novo projeto
+    setProjects(newProjectsArray); // atualiza o estado colocando um novo projeto
 
-    setNewProjectName(""); // 5. Limpa o input (resetando o estado do input controlado)
+    setNewProjectName(""); // limpa o input (resetando o estado do input controlado)
   };
 
   const handleInputChange = (event) => {
     setNewProjectName(event.target.value);
   };
 
+  const handleDeleteProject = (myList, index) => {
+    const updatedArray = myList.filter((element, i) => i !== index);
+    if (myList === toDo) {
+      return setProjects(updatedArray);
+    } else if (myList === inProgress) {
+      return setInProgress(updatedArray);
+    } else if (myList === finished) {
+      return setFinished(updatedArray);
+    }
+  };
+
+  const handleChangeStatus = (myList, index, newStatus) => {
+    const projectToUpdate = myList[index];
+    const updatedProject = { ...projectToUpdate, status: newStatus };
+
+    const updatedArray = myList.map((element, i) =>
+      i === index ? updatedProject : element
+    );
+
+    if (myList === toDo) {
+      return setProjects(updatedArray);
+    }
+    if (myList === progressList) {
+      return setInProgress(updatedArray);
+    } else if (myList === finishedList) {
+      return setFinished(updatedArray);
+    }
+  };
+
   return (
     <>
       <div className="mainContainer">
+        <Snowfall color="#82C3D9" />
         <h1>Mini Trello 📋</h1>
 
         {/* Seção de Criação de Novo Projeto */}
@@ -69,13 +103,27 @@ function App() {
         </div>
       </div>
       <div className="displayObjects">
-        {/* Lista de Projetos (Continua a usar 'projects' do estado) */}
         <h2>
           Meus Projetos ({toDo.length + inProgress.length + finished.length})
         </h2>
-        <List title="To do" myList={toDo} />
-        <List title="In Progress" myList={inProgress} />
-        <List title="Finished" myList={finished} />
+        <List
+          title="To do"
+          myList={toDo}
+          onDelete={handleDeleteProject}
+          onChangeStatus={handleChangeStatus}
+        />
+        <List
+          title="In Progress"
+          myList={inProgress}
+          onDelete={handleDeleteProject}
+          onChangeStatus={handleChangeStatus}
+        />
+        <List
+          title="Finished"
+          myList={finished}
+          onDelete={handleDeleteProject}
+          onChangeStatus={handleChangeStatus}
+        />
       </div>
     </>
   );
