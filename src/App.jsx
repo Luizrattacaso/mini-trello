@@ -73,14 +73,14 @@ function App() {
 
     const updatedArray = myList.map((element, i) =>
       i === index ? updatedProject : element
-    );
+    ); // o indice do elemento passado e modificado anteriormente é substituido pelo elemento atualizado
+    // "o indice desse elemento é igual ao indiceq ue eu modifiquei antes? se sim, retorna o elemento atualizado, se não retorna o elemento original"
 
     if (myList === toDo) {
       return setProjects(updatedArray);
-    }
-    if (myList === progressList) {
+    } else if (myList === inProgress) {
       return setInProgress(updatedArray);
-    } else if (myList === finishedList) {
+    } else if (myList === finished) {
       return setFinished(updatedArray);
     }
   };
