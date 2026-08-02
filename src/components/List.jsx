@@ -11,9 +11,9 @@ function List({ title, myList, color, onDelete, onChangeStatus }) {
               value={item.status}
             >
               <option value=""></option>
-              <option value="to do">To do</option>
-              <option value="in progress">In Progress</option>
-              <option value="finished">Finished</option>
+              <option value="0">To do</option>
+              <option value="1">In Progress</option>
+              <option value="2">Finished</option>
             </select>
             <button className="" onClick={() => onDelete(myList, index)}>
               Delete
