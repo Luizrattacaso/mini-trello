@@ -6,17 +6,15 @@ import Button from "./components/Button";
 import Input from "./components/Input";
 
 function App() {
-  const INITIAL_PROJECTS = [
-    { name: "Tarefa teste", status: "0" },
-  ];
-  const inProgressList = [];
-  const finishedList = [];
-
-  const [toDo, setProjects] = useState(INITIAL_PROJECTS);
-  const [inProgress, setInProgress] = useState(inProgressList);
-  const [finished, setFinished] = useState(finishedList);
+  const [tasks, setTasks] = useState([
+    { id: "1", name: "Tarefa teste", status: "0" },
+  ]);
 
   const [newProjectName, setNewProjectName] = useState("");
+
+  const toDo = tasks.filter((task) => task.status === "0");
+  const inProgress = tasks.filter((task) => task.status === "1");
+  const finished = tasks.filter((task) => task.status === "2");
 
   const handleAddProject = () => {
     if (!newProjectName.trim()) {
@@ -25,13 +23,12 @@ function App() {
     }
 
     const newProject = {
+      id: Date.now().toString(),
       name: newProjectName,
       status: "0",
     };
-
-    const newProjectsArray = [...toDo, newProject];
-
-    setProjects(newProjectsArray);
+    
+    setTasks((prev) => [...prev, newProject]);
     setNewProjectName("");
   };
 
@@ -39,52 +36,36 @@ function App() {
     setNewProjectName(event.target.value);
   };
 
-  const handleDeleteProject = (myList, index) => {
-    const updatedArray = myList.filter((element, i) => i !== index);
-    if (myList === toDo) {
-      return setProjects(updatedArray);
-    } else if (myList === inProgress) {
-      return setInProgress(updatedArray);
-    } else if (myList === finished) {
-      return setFinished(updatedArray);
-    }
+  const handleDeleteProject = (id) => {
+    setTasks((prev) => prev.filter((task) => task.id !== id));
   };
 
-  const handleChangeStatus = (myList, index, newStatus) => {
-    const projectToUpdate = myList[index];
-    const updatedProject = { ...projectToUpdate, status: newStatus };
-
-    const updatedArray = myList.map((element, i) =>
-      i === index ? updatedProject : element
+   const handleChangeStatus = (id, newStatus) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id ? { ...task, status: newStatus } : task
+      )
     );
-
-    if (myList === toDo) {
-      return setProjects(updatedArray);
-    } else if (myList === inProgress) {
-      return setInProgress(updatedArray);
-    } else if (myList === finished) {
-      return setFinished(updatedArray);
-    }
   };
 
   return (
     <>
       <div className="mainContainer">
         <Snowfall color="#82C3D9" />
-        <h1>Mini Trello 📋</h1>
+        <h1>Mini Trello</h1>
         <div className="newProject">
-          <h2>Criar Novo Projeto</h2>
+          <h2>Add new task or to-do</h2>
           <Input
-            placeholder="Nome do Projeto"
+            placeholder="Add task name"
             value={newProjectName}
             onSelect={handleInputChange}
           />
-          <Button onSelect={handleAddProject} text="Adicionar" />
+          <Button onSelect={handleAddProject} text="Add" />
         </div>
       </div>
       <div className="displayObjects">
         <h2>
-          Meus Projetos ({toDo.length + inProgress.length + finished.length})
+          My tasks ({toDo.length + inProgress.length + finished.length})
         </h2>
         <List
           title="To do"

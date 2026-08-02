@@ -3,11 +3,11 @@ function List({ title, myList, color, onDelete, onChangeStatus }) {
     <div className="listContainer" style={color && { backgroundColor: color }}>
       <h2>{title ? title : ""}</h2>
       <ol>
-        {myList.map((item, index) => (
-          <li key={index}>
+        {myList.map((item) => (
+          <li key={item.id}>
             <span>{item.name} </span>
             <select
-              onChange={(e) => onChangeStatus(myList, index, e.target.value)}
+              onChange={(e) => onChangeStatus(item.id, e.target.value)}
               value={item.status}
             >
               <option value=""></option>
@@ -15,7 +15,7 @@ function List({ title, myList, color, onDelete, onChangeStatus }) {
               <option value="1">In Progress</option>
               <option value="2">Finished</option>
             </select>
-            <button className="" onClick={() => onDelete(myList, index)}>
+            <button className="" onClick={() => onDelete(item.id)}>
               Delete
             </button>
           </li>
