@@ -1,28 +1,16 @@
-import List from "./components/List.jsx";
-import Button from "./components/Button.jsx";
-import Input from "./components/Input.jsx";
 import { useState } from "react";
 import Snowfall from "react-snowfall";
 
-//TODO:
-//1. adicionar objeto com chave de status e renderirizar listas com base nisso ===> ideal fazer um enum para os status
-//2. adiconar botão com lápis para mudança de status (ciclo entre os status)
+import List from "./components/List";
+import Button from "./components/Button";
+import Input from "./components/Input";
 
 function App() {
   const INITIAL_PROJECTS = [
-    { name: "Organização de Notion", status: "to do" },
-    { name: "Estudar Imutabilidade JS", status: "to do" },
-    { name: "Melhorar código de App.jsx", status: "to do" },
+    { name: "Tarefa teste", status: "0" },
   ];
-  const inProgressList = [
-    { name: "Desenvolver Mini Trello", status: "in progress" },
-    { name: "Estudar React Hooks", status: "in progress" },
-    { name: "Curso do Maximilian Schwarzmüller", status: "in progress" },
-  ];
-  const finishedList = [
-    { name: "Aprender JavaScript", status: "finished" },
-    { name: "Aprender Git e GitHub", status: "finished" },
-  ];
+  const inProgressList = [];
+  const finishedList = [];
 
   const [toDo, setProjects] = useState(INITIAL_PROJECTS);
   const [inProgress, setInProgress] = useState(inProgressList);
@@ -32,24 +20,19 @@ function App() {
 
   const handleAddProject = () => {
     if (!newProjectName.trim()) {
-      // uma string vazia é igual a false e ao tornar false com o ! torna-se true e cai no if
-      // 1. Prevenção básica (não adicionar projetos vazios)
-      alert("O nome do projeto não pode ser vazio!");
+      alert("project name cannot be empty");
       return;
     }
 
     const newProject = {
       name: newProjectName,
-      status: "to do",
+      status: "0",
     };
 
     const newProjectsArray = [...toDo, newProject];
-    //não funcionaria se usassemos o .push() diretamente no estado (imutabilidade) pois isso alteraria o array original.
-    // O React não renderizaria, ele só renderiza quando detecta a mudança no local de memória.
 
-    setProjects(newProjectsArray); // atualiza o estado colocando um novo projeto
-
-    setNewProjectName(""); // limpa o input (resetando o estado do input controlado)
+    setProjects(newProjectsArray);
+    setNewProjectName("");
   };
 
   const handleInputChange = (event) => {
@@ -73,8 +56,7 @@ function App() {
 
     const updatedArray = myList.map((element, i) =>
       i === index ? updatedProject : element
-    ); // o indice do elemento passado e modificado anteriormente é substituido pelo elemento atualizado
-    // "o indice desse elemento é igual ao indiceq ue eu modifiquei antes? se sim, retorna o elemento atualizado, se não retorna o elemento original"
+    );
 
     if (myList === toDo) {
       return setProjects(updatedArray);
@@ -90,8 +72,6 @@ function App() {
       <div className="mainContainer">
         <Snowfall color="#82C3D9" />
         <h1>Mini Trello 📋</h1>
-
-        {/* Seção de Criação de Novo Projeto */}
         <div className="newProject">
           <h2>Criar Novo Projeto</h2>
           <Input

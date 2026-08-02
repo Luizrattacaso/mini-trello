@@ -1,5 +1,6 @@
 {
   "name": "mini-trello",
+  "description": "Simple fullstack application project for todo lists. It will use React in frontend, nodeJs in backend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
