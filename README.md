@@ -13,10 +13,10 @@ This project provides a simple web page to track your daily tasks. It helps you 
    npm install
    ```
 3. **Run the local environment**
-```
-npm run dev
-```
+   ```
+   npm run dev
+   ```
 4. **Open the web application in your browser pasting**
-```
-http://localhost:5173/
-```
+   ```
+   http://localhost:5173/
+   ```
