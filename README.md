@@ -14,7 +14,7 @@ This project provides a simple web page to track your daily tasks. It helps you 
    ```
 3. **Run the local environment**
    ```
-   npm run dev
+   cd src && npm run dev
    ```
 4. **Open the web application in your browser pasting**
    ```
