@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Snowfall from "react-snowfall";
 
 import List from "./components/List";
@@ -6,41 +6,66 @@ import Button from "./components/Button";
 import Input from "./components/Input";
 
 function App() {
-  const [tasks, setTasks] = useState([
-    { id: "1", name: "Tarefa teste", status: "0" },
-  ]);
-
+  const [tasks, setTasks] = useState([]);
   const [newProjectName, setNewProjectName] = useState("");
+
+  const API_URL = "http://localhost:1212";
+
+  useEffect(() => {
+    fetch(API_URL)
+      .then((res) => res.json())
+      .then((data) => setTasks(data))
+      .catch((err) => console.error("Error while loading tasks:", err));
+  }, []);
 
   const toDo = tasks.filter((task) => task.status === "0");
   const inProgress = tasks.filter((task) => task.status === "1");
   const finished = tasks.filter((task) => task.status === "2");
 
-  const handleAddProject = () => {
+  const handleAddProject = async () => {
     if (!newProjectName.trim()) {
       alert("project name cannot be empty");
       return;
     }
 
-    const newProject = {
-      id: Date.now().toString(),
-      name: newProjectName,
-      status: "0",
-    };
-    
-    setTasks((prev) => [...prev, newProject]);
-    setNewProjectName("");
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newProjectName, status: "0" }),
+      });
+
+      if (response.ok) {
+        const newTask = await response.json();
+        setTasks((prev) => [...prev, newTask]);
+        setNewProjectName("");
+      }
+    } catch (error) {
+      console.error("Error while adding new task:", error);
+    }
   };
 
   const handleInputChange = (event) => {
     setNewProjectName(event.target.value);
   };
 
-  const handleDeleteProject = (id) => {
-    setTasks((prev) => prev.filter((task) => task.id !== id));
+  const handleDeleteProject = async (id) => {
+    try {
+      const response = await fetch(API_URL, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+
+      if (response.ok) {
+        setTasks((prev) => prev.filter((task) => task.id !== id));
+      }
+    } catch (error) {
+      console.error("Erro ao deletar tarefa:", error);
+    }
   };
 
-   const handleChangeStatus = (id, newStatus) => {
+  const handleChangeStatus = (id, newStatus) => {
     setTasks((prev) =>
       prev.map((task) =>
         task.id === id ? { ...task, status: newStatus } : task
