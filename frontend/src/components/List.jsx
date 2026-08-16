@@ -10,7 +10,6 @@ function List({ title, myList, color, onDelete, onChangeStatus }) {
               onChange={(e) => onChangeStatus(item.id, e.target.value)}
               value={item.status}
             >
-              <option value=""></option>
               <option value="0">To do</option>
               <option value="1">In Progress</option>
               <option value="2">Finished</option>
