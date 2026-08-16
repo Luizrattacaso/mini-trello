@@ -8,7 +8,7 @@ function List({ title, myList, color, onDelete, onChangeStatus }) {
             <span>{item.name} </span>
             <select
               onChange={(e) => onChangeStatus(item.id, e.target.value)}
-              value={item.status}
+              value={String(item.status)}
             >
               <option value="0">To do</option>
               <option value="1">In Progress</option>
