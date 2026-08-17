@@ -35,8 +35,10 @@ function App() {
         body: JSON.stringify({ name: newProjectName, status: "0" }),
       });
 
+      const newTask = await response.json();
+      console.log("New task added:", newTask);
+
       if (response.ok) {
-        const newTask = await response.json();
         setTasks((prev) => [...prev, newTask]);
         setNewProjectName("");
       }

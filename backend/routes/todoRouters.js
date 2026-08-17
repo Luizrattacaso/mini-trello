@@ -10,8 +10,10 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     const { name, status } = req.body;
+    const statusStr = String(status || "0");
+
     const insertTodo = db.prepare('INSERT INTO todos (name, status) VALUES (?, ?)');
-    const result = insertTodo.run(name, status || '0');
+    const result = insertTodo.run(name, statusStr);
 
     const newTodo = db.prepare('SELECT * FROM todos WHERE id = ?').get(result.lastInsertRowid);
     res.status(201).json(newTodo);
