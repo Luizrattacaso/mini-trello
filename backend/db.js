@@ -1,22 +1,12 @@
 import { DatabaseSync } from "node:sqlite";
 
-const db = new DatabaseSync(":memory:");
-
-db.exec(`
-    CREATE TABLE users(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE,
-        password TEXT
-    )
-`);
+const db = new DatabaseSync("database.sqlite");
 
 db.exec(`
     CREATE TABLE todos(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
         name TEXT,
-        status INTEGER,
-        FOREIGN KEY(user_id) REFERENCES users(id)
+        status TEXT
     )
 `);
 

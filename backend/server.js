@@ -1,9 +1,11 @@
 import express from 'express'
+import cors from 'cors' // NOTE: This help to join differents origins (frontend and backend) in development environment
 import todoRoutes from './routes/todoRouters.js'
 
 const app = express()
 const PORT = 1212
 
+app.use(cors())
 app.use(express.json())
 app.use('/', todoRoutes)
 
