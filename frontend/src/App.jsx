@@ -36,7 +36,6 @@ function App() {
       });
 
       const newTask = await response.json();
-      console.log("New task added:", newTask);
 
       if (response.ok) {
         setTasks((prev) => [...prev, newTask]);
@@ -53,10 +52,8 @@ function App() {
 
   const handleDeleteProject = async (id) => {
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(`${API_URL}/${id}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id }),
       });
 
       if (response.ok) {
@@ -67,12 +64,24 @@ function App() {
     }
   };
 
-  const handleChangeStatus = (id, newStatus) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id ? { ...task, status: newStatus } : task
-      )
-    );
+  const handleChangeStatus = async (id, newStatus) => {
+    try {
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (response.ok) {
+        setTasks((prev) =>
+          prev.map((task) =>
+            task.id === id ? { ...task, status: newStatus } : task
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar status:", error);
+    }
   };
 
   return (
