@@ -56,3 +56,39 @@ Before you begin, ensure you have the following installed on your machine:
 git clone https://github.com/Luizrattacaso/TaskFlow-Dashboard.git
 cd TaskFlow-Dashboard
 ```
+## Quick Setup and Development
+
+This project includes convenient npm scripts to simplify the setup and development process. All commands should be run from the root directory of the project.
+
+### Initial Setup
+
+For better and easy setup environment please install the `concurrently` with this command:
+
+```
+npm install concurrently --save-dev
+```
+
+To install all dependencies for the root, backend, and frontend folders at once, run:
+
+```
+npm run setup
+```
+
+## Running Services
+
+If you need to run only one service, 
+
+you can use for frontend:
+```
+npm run start:frontend
+```
+
+you can use for backend:
+```
+npm run start:backend
+```
+
+To start both the frontend and backend servers simultaneously in development mode, run in the `TaskFlow-Dashboard` folder:
+```
+npm run dev
+```
