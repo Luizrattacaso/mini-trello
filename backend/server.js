@@ -8,7 +8,7 @@ const PORT = 1212
 
 app.use(cors())
 app.use(express.json())
-app.use('/', todoRoutes)
+app.use('/tasks', todoRoutes)
 app.use('/auth', authRoutes)
 
 app.listen(PORT, () => {

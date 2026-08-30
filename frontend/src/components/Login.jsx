@@ -36,9 +36,12 @@ function Login({ onLoginSuccess }) {
           setUsername("");
           setPassword("");
         } else {
-          toast.success("Login completed successfully!");
-          localStorage.setItem("user", JSON.stringify(data.user));
-          onLoginSuccess(data.user);
+          localStorage.setItem('userId', data.user.id);
+          localStorage.setItem('username', data.user.username);
+          
+          if (onLoginSuccess) {
+            onLoginSuccess(data.user);
+          }
         }
       } else {
         toast.error(data.message || "Invalid username or password.");

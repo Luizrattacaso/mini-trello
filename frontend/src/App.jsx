@@ -17,12 +17,12 @@ function App() {
   const [newProjectName, setNewProjectName] = useState("");
   const today = new Date();
 
-  const API_URL = "http://localhost:1212";
+  const API_URL = "http://localhost:1212/tasks";
 
   useEffect(() => {
     if (!user) return;
 
-    fetch(`${API_URL}/tasks?user_id=${user.id}`)
+    fetch(`${API_URL}?userId=${user.id}`)
       .then((res) => res.json())
       .then((data) => setTasks(data))
       .catch((err) => console.error("Error while loading tasks:", err));
@@ -32,7 +32,6 @@ function App() {
     localStorage.removeItem("user");
     setUser(null);
     setTasks([]);
-    toast.success("Logout completed successfully");
   };
 
   if (!user) {
@@ -45,7 +44,7 @@ function App() {
 
   const handleAddProject = async () => {
     if (!newProjectName.trim()) {
-      toast.error("project name cannot be empty");
+      toast.error("Project name cannot be empty");
       return;
     }
 
@@ -53,7 +52,7 @@ function App() {
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newProjectName, status: "0", user_id: user.id }),
+        body: JSON.stringify({ name: newProjectName, status: "0", userId: user.id }),
       });
 
       const newTask = await response.json();
@@ -62,6 +61,8 @@ function App() {
         setTasks((prev) => [...prev, newTask]);
         setNewProjectName("");
         toast.success("Task added successfully");
+      } else {
+        toast.error(newTask.error || "Error adding task");
       }
     } catch (error) {
       console.error("Error while adding new task:", error);
@@ -77,11 +78,15 @@ function App() {
     try {
       const response = await fetch(`${API_URL}/${id}`, {
         method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id }),
       });
 
       if (response.ok) {
         setTasks((prev) => prev.filter((task) => task.id !== id));
         toast.success("Task removed");
+      } else {
+        toast.error("Error removing task");
       }
     } catch (error) {
       console.error("Error while deleting task:", error);
@@ -94,7 +99,7 @@ function App() {
       const response = await fetch(`${API_URL}/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
+        body: JSON.stringify({ status: newStatus, userId: user.id }),
       });
 
       if (response.ok) {
@@ -103,7 +108,8 @@ function App() {
             task.id === id ? { ...task, status: newStatus } : task
           )
         );
-        toast.success("Status updated");
+      } else {
+        toast.error("Error updating status");
       }
     } catch (error) {
       console.error("Error while updating status:", error);
