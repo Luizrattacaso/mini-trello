@@ -95,7 +95,10 @@ npm run dev
 ## Quick Overview
 
 ### Application Demo
-<video src="./frontend/public/assets/example.mp4" controls width="100%"></video>
+
+<img src="./frontend/public/assets/login.png" alt="Christmas Theme Preview" width="100%">
+<img src="./frontend/public/assets/user1.png" alt="Christmas Theme Preview" width="100%">
+<img src="./frontend/public/assets/user2.png" alt="Christmas Theme Preview" width="100%">
 
 ### Christmas Theme
 I also use this theme throughout December for the Christmas season:
