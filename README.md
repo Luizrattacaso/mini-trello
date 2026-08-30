@@ -92,3 +92,14 @@ To start both the frontend and backend servers simultaneously in development mod
 ```
 npm run dev
 ```
+## Quick Overview
+
+### Application Demo
+<video src="./frontend/public/assets/example.mp4" controls width="100%"></video>
+
+### Christmas Theme
+I also use this theme throughout December for the Christmas season:
+
+<img src="./frontend/public/assets/christmas_theme.png" alt="Christmas Theme Preview" width="100%">
+
+
