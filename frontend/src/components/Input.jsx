@@ -1,12 +1,13 @@
-function Input(props) {
+function Input({ type = "text", placeholder, value, onSelect, className, id }) {
   return (
     <input
-      type="text"
-      placeholder={props.placeholder}
-      value={props.value}
-      onChange={props.onSelect}
-      className="myInput"
-    ></input>
+      id={id}
+      type={type}
+      placeholder={placeholder}
+      value={value}
+      onChange={onSelect}
+      className={className || "myInput"}
+    />
   );
 }
 

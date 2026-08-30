@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
 import Snowfall from "react-snowfall";
+import toast from "react-hot-toast";
 
 import List from "./components/List";
 import Button from "./components/Button";
 import Input from "./components/Input";
+import Login from "./components/Login";
 
 function App() {
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+  
   const [tasks, setTasks] = useState([]);
   const [newProjectName, setNewProjectName] = useState("");
   const today = new Date();
@@ -13,11 +20,24 @@ function App() {
   const API_URL = "http://localhost:1212";
 
   useEffect(() => {
-    fetch(API_URL)
+    if (!user) return;
+
+    fetch(`${API_URL}/tasks?user_id=${user.id}`)
       .then((res) => res.json())
       .then((data) => setTasks(data))
       .catch((err) => console.error("Error while loading tasks:", err));
-  }, []);
+  }, [user]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    setTasks([]);
+    toast.success("Logout completed successfully");
+  };
+
+  if (!user) {
+    return <Login onLoginSuccess={(userData) => setUser(userData)} />;
+  }
 
   const toDo = tasks.filter((task) => task.status === "0");
   const inProgress = tasks.filter((task) => task.status === "1");
@@ -25,7 +45,7 @@ function App() {
 
   const handleAddProject = async () => {
     if (!newProjectName.trim()) {
-      alert("project name cannot be empty");
+      toast.error("project name cannot be empty");
       return;
     }
 
@@ -33,7 +53,7 @@ function App() {
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newProjectName, status: "0" }),
+        body: JSON.stringify({ name: newProjectName, status: "0", user_id: user.id }),
       });
 
       const newTask = await response.json();
@@ -41,9 +61,11 @@ function App() {
       if (response.ok) {
         setTasks((prev) => [...prev, newTask]);
         setNewProjectName("");
+        toast.success("Task added successfully");
       }
     } catch (error) {
       console.error("Error while adding new task:", error);
+      toast.error("Error while adding new task.");
     }
   };
 
@@ -59,9 +81,11 @@ function App() {
 
       if (response.ok) {
         setTasks((prev) => prev.filter((task) => task.id !== id));
+        toast.success("Task removed");
       }
     } catch (error) {
-      console.error("Erro ao deletar tarefa:", error);
+      console.error("Error while deleting task:", error);
+      toast.error("Error while deleting task.");
     }
   };
 
@@ -79,9 +103,11 @@ function App() {
             task.id === id ? { ...task, status: newStatus } : task
           )
         );
+        toast.success("Status updated");
       }
     } catch (error) {
-      console.error("Erro ao atualizar status:", error);
+      console.error("Error while updating status:", error);
+      toast.error("Error while updating status.");
     }
   };
 
@@ -89,7 +115,10 @@ function App() {
     <>
       <div className="mainContainer">
         {today.getMonth() === 11 && <Snowfall color="#82C3D9" />}
-        <h1>Mini Trello</h1>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <h1>Welcome to TaskFlow Dashboard, {user.username}</h1>
+          <Button onSelect={handleLogout} text="Sair" />
+        </div>
         <div className="newProject">
           <h2>Add new task or to-do</h2>
           <Input
