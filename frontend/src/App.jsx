@@ -8,6 +8,7 @@ import Input from "./components/Input";
 function App() {
   const [tasks, setTasks] = useState([]);
   const [newProjectName, setNewProjectName] = useState("");
+  const today = new Date();
 
   const API_URL = "http://localhost:1212";
 
@@ -87,7 +88,7 @@ function App() {
   return (
     <>
       <div className="mainContainer">
-        <Snowfall color="#82C3D9" />
+        {today.getMonth() === 11 && <Snowfall color="#82C3D9" />}
         <h1>Mini Trello</h1>
         <div className="newProject">
           <h2>Add new task or to-do</h2>
